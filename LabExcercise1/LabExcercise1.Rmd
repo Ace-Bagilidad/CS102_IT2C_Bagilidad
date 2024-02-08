@@ -1,0 +1,239 @@
+---
+title: "Lab Excercise 1"
+author: "Bagilidad Ace"
+date: "2024-02-08"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Tshirts 100 Products
+```{r}
+#install.packages(rvest)
+#install.packages(dplyr)
+#install.packages(polite)
+#install.packages(tidyverse)
+install.packages("httr")
+
+library(rvest)
+library(dplyr)
+library(polite)
+library(tidyverse)
+
+
+#Tshirts
+urlName1 <- "https://www.amazon.co.uk/Mens-T-Shirts/b?ie=UTF8&node=1731028031"
+
+session <- bow(urlName1, user_agent = "For Educational Purposes")
+session
+
+
+amazonPage <- read_html(url)
+
+#name1
+Name1 <- scrape(session) %>%
+  html_nodes("span.a-text-normal") %>%
+  html_text
+Name1
+
+Name1_100 <- Name1[2:48]
+Name1_100
+
+#df
+Page1_name <- data.frame(Name = Name1_100)
+Page1_name
+#price1
+Price1 <- scrape(session) %>%
+  html_nodes("span.a-offscreen") %>%
+  html_text
+Price1
+
+Price1_100<- Price1[1:47]
+Price1_100
+
+
+Page1_price <-  data.frame(Price = Price1_100)
+Page1_price
+
+#ratings
+Ratings1 <- scrape(session) %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text
+Ratings1
+
+Ratings1_100<- Ratings1[1:47]
+Ratings1_100
+
+Page1_ratings <-  data.frame(Ratings = Ratings1_100)
+Page1_ratings
+
+#Total number of reviews
+NumRev1 <- scrape(session) %>%
+  html_nodes("span.a-size-base.s-underline-text") %>%
+  html_text
+NumRev1
+
+NumRev1_100<- NumRev1[1:47]
+NumRev1_100
+
+Page1_NumRev <-  data.frame(Number.of.ratings = NumRev1_100)
+Page1_NumRev
+
+#2nd page
+urlName2 <- "https://www.amazon.co.uk/s?k=Men%27s+T-Shirts&i=fashion-mens-clothing&rh=n%3A1731028031&page=2&c=ts&qid=1707354399&ts_id=1731028031&ref=sr_pg_2"
+session2 <- bow(urlName2, user_agent = "For Educational Purposes")
+session2
+
+Name2 <- scrape(session2) %>%
+  html_nodes("span.a-text-normal") %>%
+  html_text
+Name2
+
+Name2_100 <- Name2[2:48]
+Name2_100
+
+Page2_name <- data.frame(Name = Name2_100)
+Page2_name
+
+#price2
+Price2 <- scrape(session2) %>%
+  html_nodes("span.a-offscreen") %>%
+  html_text
+Price2
+
+Price2_100<- Price2[1:47]
+Price2_100
+
+
+Page2_price <-  data.frame(Price = Price2_100)
+Page2_price
+
+#Ratings
+Ratings2 <- scrape(session2) %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text
+Ratings2
+
+Ratings2_100<- Ratings2[1:47]
+Ratings2_100
+
+Page2_ratings <-  data.frame(Ratings = Ratings2_100)
+Page2_ratings
+
+#Number of Ratings 
+NumRev2 <- scrape(session) %>%
+  html_nodes("span.a-size-base.s-underline-text") %>%
+  html_text
+NumRev2
+
+NumRev2_100<- NumRev2[1:47]
+NumRev2_100
+
+Page2_NumRev <-  data.frame(Number.of.ratings = NumRev2_100)
+Page2_NumRev
+
+
+#3rd page
+
+urlName3 <- "https://www.amazon.co.uk/s?k=Men%27s+T-Shirts&i=fashion-mens-clothing&rh=n%3A1731028031&page=3&c=ts&qid=1707354459&ts_id=1731028031&ref=sr_pg_3"
+
+session3 <- bow(urlName3, user_agent = "For Educational Purposes")
+session3
+#name
+Name3 <- scrape(session3) %>%
+  html_nodes("span.a-text-normal") %>%
+  html_text
+Name3
+
+Name3_100 <- Name3[2:7]
+Name3_100
+
+Page3_name <- data.frame(Name = Name3_100)
+Page3_name
+
+#price
+Price3 <- scrape(session3) %>%
+  html_nodes("span.a-offscreen") %>%
+  html_text
+Price3
+
+Price3_100<- Price3[1:6]
+Price3_100
+
+
+Page3_price <-  data.frame(Price = Price3_100)
+Page3_price
+
+
+#Ratings
+Ratings3 <- scrape(session3) %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text
+Ratings3
+
+Ratings3_100<- Ratings3[1:6]
+Ratings3_100
+
+Page3_ratings <-  data.frame(Ratings = Ratings3_100)
+Page3_ratings
+
+#Number of Ratings 
+NumRev3 <- scrape(session3) %>%
+  html_nodes("span.a-size-base.s-underline-text") %>%
+  html_text
+NumRev3
+
+NumRev3_100<- NumRev3[1:6]
+NumRev3_100
+
+Page3_NumRev <-  data.frame(Number.of.ratings = NumRev3_100)
+Page3_NumRev
+
+
+#Viewing of page
+
+tshirtNameDf <- rbind(Page1,Page2,Page3)
+tshirtNameDf
+
+tshirtPriceDf <- rbind(Page1_price,Page2_price,Page3_price)
+tshirtPriceDf
+
+
+tshirtRatingsDf <- rbind(Page1_ratings,Page2_ratings,Page3_ratings)
+tshirtRatingsDf
+
+tshirtNumRevsDf <- rbind(Page1_NumRev,Page2_NumRev,Page3_NumRev)
+tshirtNumRevsDf
+
+view(Page1)
+View(Page2)
+View(Page3)
+
+View(Page1_price)
+View(Page2_price)
+View(Page3_price)
+
+View(Page1_ratings)
+View(Page2_ratings)
+View(Page3_ratings)
+
+
+
+
+View(tshirtDf)
+View(tshirtPriceDf)
+View(tshirtRatingsDf)
+View(tshirtNumRevsDf)
+
+tshirtDf <- cbind(tshirtDf,tshirtPriceDf,tshirtRatingsDf,tshirtNumRevsDf)
+tshirtDf
+
+
+view(tshirtDf)
+
+```
+
+Product 2 100 products
