@@ -2,21 +2,22 @@
 title: "Lab Excercise 1"
 author: "Bagilidad Ace"
 date: "2024-02-08"
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
-Tshirts 100 Products
+ Product 1 Tshirts 100 Products
 ```{r}
 #install.packages(rvest)
 #install.packages(dplyr)
 #install.packages(polite)
 #install.packages(tidyverse)
-install.packages("httr")
+
 
 library(rvest)
 library(dplyr)
@@ -24,7 +25,7 @@ library(polite)
 library(tidyverse)
 
 
-#Tshirts
+#Mens Tshirts
 urlName1 <- "https://www.amazon.co.uk/Mens-T-Shirts/b?ie=UTF8&node=1731028031"
 
 session <- bow(urlName1, user_agent = "For Educational Purposes")
@@ -33,30 +34,23 @@ session
 
 amazonPage <- read_html(url)
 
-#name1
+category1 <- "Mens Tshirt"
+
+#name
 Name1 <- scrape(session) %>%
   html_nodes("span.a-text-normal") %>%
   html_text
 Name1
 
-Name1_100 <- Name1[2:48]
-Name1_100
-
 #df
 Page1_name <- data.frame(Name = Name1_100)
 Page1_name
+
 #price1
 Price1 <- scrape(session) %>%
   html_nodes("span.a-offscreen") %>%
   html_text
 Price1
-
-Price1_100<- Price1[1:47]
-Price1_100
-
-
-Page1_price <-  data.frame(Price = Price1_100)
-Page1_price
 
 #ratings
 Ratings1 <- scrape(session) %>%
@@ -64,11 +58,6 @@ Ratings1 <- scrape(session) %>%
   html_text
 Ratings1
 
-Ratings1_100<- Ratings1[1:47]
-Ratings1_100
-
-Page1_ratings <-  data.frame(Ratings = Ratings1_100)
-Page1_ratings
 
 #Total number of reviews
 NumRev1 <- scrape(session) %>%
@@ -76,11 +65,6 @@ NumRev1 <- scrape(session) %>%
   html_text
 NumRev1
 
-NumRev1_100<- NumRev1[1:47]
-NumRev1_100
-
-Page1_NumRev <-  data.frame(Number.of.ratings = NumRev1_100)
-Page1_NumRev
 
 #2nd page
 urlName2 <- "https://www.amazon.co.uk/s?k=Men%27s+T-Shirts&i=fashion-mens-clothing&rh=n%3A1731028031&page=2&c=ts&qid=1707354399&ts_id=1731028031&ref=sr_pg_2"
@@ -92,24 +76,11 @@ Name2 <- scrape(session2) %>%
   html_text
 Name2
 
-Name2_100 <- Name2[2:48]
-Name2_100
-
-Page2_name <- data.frame(Name = Name2_100)
-Page2_name
-
 #price2
 Price2 <- scrape(session2) %>%
   html_nodes("span.a-offscreen") %>%
   html_text
 Price2
-
-Price2_100<- Price2[1:47]
-Price2_100
-
-
-Page2_price <-  data.frame(Price = Price2_100)
-Page2_price
 
 #Ratings
 Ratings2 <- scrape(session2) %>%
@@ -117,23 +88,11 @@ Ratings2 <- scrape(session2) %>%
   html_text
 Ratings2
 
-Ratings2_100<- Ratings2[1:47]
-Ratings2_100
-
-Page2_ratings <-  data.frame(Ratings = Ratings2_100)
-Page2_ratings
-
 #Number of Ratings 
 NumRev2 <- scrape(session) %>%
   html_nodes("span.a-size-base.s-underline-text") %>%
   html_text
 NumRev2
-
-NumRev2_100<- NumRev2[1:47]
-NumRev2_100
-
-Page2_NumRev <-  data.frame(Number.of.ratings = NumRev2_100)
-Page2_NumRev
 
 
 #3rd page
@@ -148,24 +107,12 @@ Name3 <- scrape(session3) %>%
   html_text
 Name3
 
-Name3_100 <- Name3[2:7]
-Name3_100
-
-Page3_name <- data.frame(Name = Name3_100)
-Page3_name
 
 #price
 Price3 <- scrape(session3) %>%
   html_nodes("span.a-offscreen") %>%
   html_text
 Price3
-
-Price3_100<- Price3[1:6]
-Price3_100
-
-
-Page3_price <-  data.frame(Price = Price3_100)
-Page3_price
 
 
 #Ratings
@@ -174,66 +121,768 @@ Ratings3 <- scrape(session3) %>%
   html_text
 Ratings3
 
-Ratings3_100<- Ratings3[1:6]
-Ratings3_100
-
-Page3_ratings <-  data.frame(Ratings = Ratings3_100)
-Page3_ratings
-
 #Number of Ratings 
 NumRev3 <- scrape(session3) %>%
   html_nodes("span.a-size-base.s-underline-text") %>%
   html_text
 NumRev3
 
-NumRev3_100<- NumRev3[1:6]
-NumRev3_100
-
-Page3_NumRev <-  data.frame(Number.of.ratings = NumRev3_100)
-Page3_NumRev
 
 
-#Viewing of page
-
-tshirtNameDf <- rbind(Page1,Page2,Page3)
-tshirtNameDf
-
-tshirtPriceDf <- rbind(Page1_price,Page2_price,Page3_price)
-tshirtPriceDf
+#Tshirt DataFrame 
 
 
-tshirtRatingsDf <- rbind(Page1_ratings,Page2_ratings,Page3_ratings)
-tshirtRatingsDf
+pagedf1 <- data.frame(Category = rep(category1,each=47),
+                      Name = Name1[2:48],
+                      Price = Price1[1:47],
+                      Rating = Ratings1[1:47],
+                      Number.of.Reviews = NumRev1[1:47]
+                      )
+pagedf1
 
-tshirtNumRevsDf <- rbind(Page1_NumRev,Page2_NumRev,Page3_NumRev)
-tshirtNumRevsDf
-
-view(Page1)
-View(Page2)
-View(Page3)
-
-View(Page1_price)
-View(Page2_price)
-View(Page3_price)
-
-View(Page1_ratings)
-View(Page2_ratings)
-View(Page3_ratings)
+pagedf2 <- data.frame(Category = rep(category1,each=47),
+                      Name = Name2[2:48],
+                      Price = Price2[1:47],
+                      Rating = Ratings2[1:47],
+                      Number.of.Reviews = NumRev2[1:47]
+                      )
+pagedf2
 
 
+pagedf3 <- data.frame(Category = rep(category1,each=6),
+                      Name = Name3[2:7],
+                      Price = Price3[1:6],
+                      Rating = Ratings3[1:6],
+                      Number.of.Reviews = NumRev3[1:6]
+                      
+                      
+                       )
+pagedf3
+
+mensTshirt <- rbind(pagedf1,pagedf2,pagedf3)
+mensTshirt             
+# view(mensTshirt)
 
 
-View(tshirtDf)
-View(tshirtPriceDf)
-View(tshirtRatingsDf)
-View(tshirtNumRevsDf)
-
-tshirtDf <- cbind(tshirtDf,tshirtPriceDf,tshirtRatingsDf,tshirtNumRevsDf)
-tshirtDf
-
-
-view(tshirtDf)
 
 ```
 
-Product 2 100 products
+
+Product 2 Mens Shorts 100 products
+
+
+```{r}
+#Mens Shorts
+url1 <- "https://www.amazon.co.uk/Mens-Shorts-Free-UK-Delivery-Amazon/s?keywords=Men%27s+Shorts&rh=n%3A1731002031%2Cp_76%3A419159031&c=ts&ts_id=1731002031"
+
+session <- bow(url1, user_agent = "For Educational Purposes")
+
+
+
+amazonPage <- read_html(url)
+
+category2 <- "Mens Shorts"
+#name1
+Name1 <- scrape(session) %>%
+  html_nodes("span.a-text-normal") %>%
+  html_text
+Name1
+
+
+#price1
+Price1 <- scrape(session) %>%
+  html_nodes("span.a-offscreen") %>%
+  html_text
+Price1
+
+#ratings
+Ratings1 <- scrape(session) %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text
+Ratings1
+
+#Total number of reviews
+NumRev1 <- scrape(session) %>%
+  html_nodes("span.a-size-base.s-underline-text") %>%
+  html_text
+NumRev1
+
+#2nd page
+url2 <- "https://www.amazon.co.uk/Mens-Shorts-Free-UK-Delivery-Amazon/s?k=Men%27s+Shorts&i=fashion-mens-clothing&rh=n%3A1731002031%2Cp_76%3A419159031&page=2&c=ts&qid=1707409377&ts_id=1731002031&ref=sr_pg_2"
+session_2 <- bow(url2, user_agent = "For Educational Purposes")
+
+
+Name2 <- scrape(session_2) %>%
+  html_nodes("span.a-text-normal") %>%
+  html_text
+Name2
+
+#price2
+Price2 <- scrape(session_2) %>%
+  html_nodes("span.a-offscreen") %>%
+  html_text
+Price2
+
+#Ratings
+Ratings2 <- scrape(session_2) %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text
+Ratings2
+
+
+#Number of Ratings 
+NumRev2 <- scrape(session_2) %>%
+  html_nodes("span.a-size-base.s-underline-text") %>%
+  html_text
+NumRev2
+
+#3rd page
+
+url3 <- "https://www.amazon.co.uk/Mens-Shorts-Free-UK-Delivery-Amazon/s?k=Men%27s+Shorts&i=fashion-mens-clothing&rh=n%3A1731002031%2Cp_76%3A419159031&page=3&c=ts&qid=1707411738&ts_id=1731002031&ref=sr_pg_3"
+
+session_3 <- bow(url3, user_agent = "For Educational Purposes")
+session3
+#name
+Name3 <- scrape(session_3) %>%
+  html_nodes("span.a-text-normal") %>%
+  html_text
+Name3
+
+#price
+Price3 <- scrape(session_3) %>%
+  html_nodes("span.a-offscreen") %>%
+  html_text
+Price3
+
+#Ratings
+Ratings3 <- scrape(session_3) %>%
+  html_nodes("span.a-icon-alt") %>%
+  html_text
+Ratings3
+
+#Number of Ratings 
+NumRev3 <- scrape(session_3) %>%
+  html_nodes("span.a-size-base.s-underline-text") %>%
+  html_text
+NumRev3
+
+#Viewing of page
+
+pagedf1 <- data.frame(Category = rep(category2,each=47),
+                      Name = Name1[2:48],
+                      Price = Price1[1:47],
+                      Rating = Ratings1[1:47],
+                      Number.of.Reviews = NumRev1[1:47]
+                      )
+pagedf1
+
+pagedf2 <- data.frame(Category = rep(category2,each=47),
+                      Name = Name2[2:48],
+                      Price = Price2[1:47],
+                      Rating = Ratings2[1:47],
+                      Number.of.Reviews = NumRev2[1:47]
+                      )
+pagedf2
+
+
+pagedf3 <- data.frame(Category = rep(category2,each=6),
+                      Name = Name3[2:7],
+                      Price = Price3[1:6],
+                      Rating = Ratings3[1:6],
+                      Number.of.Reviews = NumRev3[1:6]
+                      
+                      
+                       )
+pagedf3
+
+
+MenShorts <- rbind(pagedf1,pagedf2,pagedf3)
+MenShorts               
+# view(MenShorts)
+
+
+#Merging of two products
+
+Products <- rbind(MenShorts,mensTshirt)
+Products
+# view(Products)
+```
+################################################################################
+10 PRODUCTS REVIEWS
+
+PRODUCT 1
+```{r}
+# install.packages("httr")
+# install.packages("rvest")
+
+library(httr)
+library(rvest)
+library(selectr)
+#1st Product 
+
+
+
+category <- "Mens Tshirt"
+
+scrapingNodes <- function(session,HTMLnodes){
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link){
+  session <- bow(link,user_agent = "For Educational Purpose")
+  
+ Product <- scrapingNodes(session,"h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session,"span.a-profile-name")[3:11]
+  prodReview <- scrapingNodes(session,"span.a-size-base.review-text.review-text-content")[1:9]
+  RevDate <- scrapingNodes(session,"span.a-size-base.a-color-secondary.review-date")[3:11]
+  prodRatings <- scrapingNodes(session,"span.a-icon-alt")[4:12]
+  
+  
+  TshirtProd <- data.frame(Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(TshirtProd)
+}
+
+#Link for the seperate pages.
+link1 <- "https://www.amazon.co.uk/Jack-Jones-Mens-Jjecorp-T-Shirt/product-reviews/B09W38Q4WX/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1<- prodDetails(link1)
+
+link2 <- "https://www.amazon.co.uk/Jack-Jones-Mens-Jjecorp-T-Shirt/product-reviews/B09W38Q4WX/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2<- prodDetails(link2)
+
+link3 <- "https://www.amazon.co.uk/JACK-JONES-12221269-Mens-T-Shirt/product-reviews/B0CTHXDTL5/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3<- prodDetails(link3)
+
+ProdReview1 <- rbind(page1,page2,page3)
+ProdReview1
+# view(ProdReview1)
+
+
+```
+
+PRODUCT 2
+```{r}
+
+library(httr)
+library(rvest)
+library(selectr)
+#2nd Product 
+
+
+
+category <- "Mens Tshirt"
+
+scrapingNodes <- function(session,HTMLnodes){
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link){
+  session <- bow(link,user_agent = "For Educational Purpose")
+  
+  Product <- scrapingNodes(session,"h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session,"span.a-profile-name")[3:11]
+  prodReview <- scrapingNodes(session,"span.a-size-base.review-text.review-text-content")[1:9]
+  RevDate <- scrapingNodes(session,"span.a-size-base.a-color-secondary.review-date")[3:11]
+  prodRatings <- scrapingNodes(session,"span.a-icon-alt")[4:12]
+  
+  
+  TshirtProd <- data.frame(Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(TshirtProd)
+}
+
+#Link for the seperate pages.
+link1 <- "https://www.amazon.co.uk/BOSS-Mens-Pack-Classic-T-Shirt/product-reviews/B0CPW6YST7/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1<- prodDetails(link1)
+
+link2 <- "https://www.amazon.co.uk/BOSS-Mens-Pack-Classic-T-Shirt/product-reviews/B0CPW6YST7/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2<- prodDetails(link2)
+
+link3 <- "https://www.amazon.co.uk/BOSS-Mens-Pack-Classic-T-Shirt/product-reviews/B0CPW6YST7/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3<- prodDetails(link3)
+
+ProdReview2 <- rbind(page1,page2,page3)
+ProdReview2
+# view(ProdReview2)
+
+```
+
+PRODUCT 3
+```{r}
+
+library(httr)
+library(rvest)
+library(selectr)
+#3rd Product 
+
+
+
+category <- "Mens Tshirt"
+
+scrapingNodes <- function(session,HTMLnodes){
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link){
+  session <- bow(link,user_agent = "For Educational Purpose")
+  
+ Product <- scrapingNodes(session,"h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session,"span.a-profile-name")[3:11]
+  prodReview <- scrapingNodes(session,"span.a-size-base.review-text.review-text-content")[1:9]
+  RevDate <- scrapingNodes(session,"span.a-size-base.a-color-secondary.review-date")[3:11]
+  prodRatings <- scrapingNodes(session,"span.a-icon-alt")[4:12]
+  
+  TshirtProd <- data.frame(Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(TshirtProd)
+}
+
+#Link for the seperate pages.
+link1 <- "https://www.amazon.co.uk/Fruit-Loom-Mens-Heavy-T-Shirt/product-reviews/B00UG7WDRK/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1<- prodDetails(link1)
+
+link2 <- "https://www.amazon.co.uk/Fruit-Loom-Mens-Heavy-T-Shirt/product-reviews/B00UG7WDRK/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2<- prodDetails(link2)
+
+link3 <- "https://www.amazon.co.uk/Fruit-Loom-Mens-Heavy-T-Shirt/product-reviews/B00UG7WDRK/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3<- prodDetails(link3)
+
+ProdReview3 <- rbind(page1,page2,page3)
+ProdReview3
+# view(ProdReview3)
+
+
+
+```
+
+
+PRODUCT 4
+```{r}
+
+library(httr)
+library(rvest)
+library(selectr)
+#4th Product 
+
+
+
+category <- "Mens Tshirt"
+
+scrapingNodes <- function(session,HTMLnodes){
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link){
+  session <- bow(link,user_agent = "For Educational Purpose")
+  
+ Product <- scrapingNodes(session,"h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session,"span.a-profile-name")[4:12]
+  prodReview <- scrapingNodes(session,"span.a-size-base.review-text.review-text-content")[1:9]
+  RevDate <- scrapingNodes(session,"span.a-size-base.a-color-secondary.review-date")[3:11]
+  prodRatings <- scrapingNodes(session,"span.a-icon-alt")[4:12]
+  
+  TshirtProd <- data.frame(Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(TshirtProd)
+}
+
+#Link for the seperate pages.
+link1 <- "https://www.amazon.co.uk/Amazon-Essentials-Short-Sleeve-Gingham-Button/product-reviews/B0775YFQMQ/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1<- prodDetails(link1)
+
+link2 <- "https://www.amazon.co.uk/Amazon-Essentials-Short-Sleeve-Gingham-Button/product-reviews/B0775YFQMQ/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2<- prodDetails(link2)
+
+link3 <- "https://www.amazon.co.uk/Amazon-Essentials-Short-Sleeve-Gingham-Button/product-reviews/B0775YFQMQ/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3<- prodDetails(link3)
+
+ProdReview4 <- rbind(page1,page2,page3)
+ProdReview4
+# view(ProdReview4)
+
+
+
+```
+
+
+PRODUCT 5
+```{r}
+
+library(httr)
+library(rvest)
+library(selectr)
+#5th Product 
+
+
+
+category <- "Mens Tshirt"
+
+scrapingNodes <- function(session,HTMLnodes){
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link){
+  session <- bow(link,user_agent = "For Educational Purpose")
+  
+ Product <- scrapingNodes(session,"h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session,"span.a-profile-name")[3:11]
+  prodReview <- scrapingNodes(session,"span.a-size-base.review-text.review-text-content")[1:9]
+  RevDate <- scrapingNodes(session,"span.a-size-base.a-color-secondary.review-date")[3:11]
+  prodRatings <- scrapingNodes(session,"span.a-icon-alt")[4:12]
+  
+  TshirtProd <- data.frame(Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(TshirtProd)
+}
+
+#Link for the seperate pages.
+link1 <- "https://www.amazon.co.uk/Urban-Classics-Oversized-Sleeves-Shoulders/product-reviews/B0014679X0/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1<- prodDetails(link1)
+
+link2 <- "https://www.amazon.co.uk/Urban-Classics-Oversized-Sleeves-Shoulders/product-reviews/B0014679X0/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2<- prodDetails(link2)
+
+link3 <- "https://www.amazon.co.uk/Urban-Classics-Oversized-Sleeves-Shoulders/product-reviews/B0014679X0/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3<- prodDetails(link3)
+
+ProdReview5 <- rbind(page1,page2,page3)
+ProdReview5
+# view(ProdReview5)
+
+
+
+```
+
+
+PRODUCT 6
+```{r}
+
+library(httr)
+library(rvest)
+library(selectr)
+#6th Product 
+
+
+
+category <- "Mens Tshirt"
+
+scrapingNodes <- function(session,HTMLnodes){
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link){
+  session <- bow(link,user_agent = "For Educational Purpose")
+  
+ Product <- scrapingNodes(session,"h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session,"span.a-profile-name")[3:11]
+  prodReview <- scrapingNodes(session,"span.a-size-base.review-text.review-text-content")[1:9]
+  RevDate <- scrapingNodes(session,"span.a-size-base.a-color-secondary.review-date")[3:11]
+  prodRatings <- scrapingNodes(session,"span.a-icon-alt")[4:12]
+  
+  TshirtProd <- data.frame(Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(TshirtProd)
+}
+
+#Link for the seperate pages.
+link1 <- "https://www.amazon.co.uk/Under-Armour-Sportstyle-Training-Fast-Drying/product-reviews/B0CTNDJMGQ/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1<- prodDetails(link1)
+
+link2 <- "https://www.amazon.co.uk/Under-Armour-Sportstyle-Training-Fast-Drying/product-reviews/B0CTNDJMGQ/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2<- prodDetails(link2)
+
+link3 <- "https://www.amazon.co.uk/Under-Armour-Sportstyle-Training-Fast-Drying/product-reviews/B0CTNDJMGQ/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3<- prodDetails(link3)
+
+ProdReview6 <- rbind(page1,page2,page3)
+ProdReview6
+# view(ProdReview6)
+
+
+```
+
+PRODUCT 7
+```{r}
+
+library(httr)
+library(rvest)
+library(selectr)
+#7th Product 
+
+
+
+category <- "Mens Tshirt"
+
+scrapingNodes <- function(session,HTMLnodes){
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link){
+  session <- bow(link,user_agent = "For Educational Purpose")
+  
+ Product <- scrapingNodes(session,"h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session,"span.a-profile-name")[3:11]
+  prodReview <- scrapingNodes(session,"span.a-size-base.review-text.review-text-content")[1:9]
+  RevDate <- scrapingNodes(session,"span.a-size-base.a-color-secondary.review-date")[3:11]
+  prodRatings <- scrapingNodes(session,"span.a-icon-alt")[4:12]
+  
+  TshirtProd <- data.frame(Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(TshirtProd)
+}
+
+#Link for the seperate pages.
+link1 <- "https://www.amazon.co.uk/Tommy-Hilfiger-Mens-Logo-T-Shirt/product-reviews/B0CQMFVC38/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1<- prodDetails(link1)
+
+link2 <- "https://www.amazon.co.uk/Tommy-Hilfiger-Mens-Logo-T-Shirt/product-reviews/B0CQMFVC38/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2<- prodDetails(link2)
+
+link3 <- "https://www.amazon.co.uk/Tommy-Hilfiger-Mens-Logo-T-Shirt/product-reviews/B0CQMFVC38/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3<- prodDetails(link3)
+
+ProdReview7 <- rbind(page1,page2,page3)
+ProdReview7
+# view(ProdReview7)
+
+
+```
+
+
+PRODUCT 8
+```{r}
+
+library(httr)
+library(rvest)
+library(selectr)
+#8th Product 
+
+
+
+category <- "Mens Tshirt"
+
+scrapingNodes <- function(session,HTMLnodes){
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link){
+  session <- bow(link,user_agent = "For Educational Purpose")
+  
+ Product <- scrapingNodes(session,"h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session,"span.a-profile-name")[3:11]
+  prodReview <- scrapingNodes(session,"span.a-size-base.review-text.review-text-content")[1:9]
+  RevDate <- scrapingNodes(session,"span.a-size-base.a-color-secondary.review-date")[3:11]
+  prodRatings <- scrapingNodes(session,"span.a-icon-alt")[4:12]
+  
+  TshirtProd <- data.frame(Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(TshirtProd)
+}
+
+#Link for the seperate pages.
+link1 <- "https://www.amazon.co.uk/Champion-Classic-Jersey-Script-T-Shirt/product-reviews/B09T9Y5MMR/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1<- prodDetails(link1)
+
+link2 <- "https://www.amazon.co.uk/Champion-Classic-Jersey-Script-T-Shirt/product-reviews/B09T9Y5MMR/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2<- prodDetails(link2)
+
+link3 <- "https://www.amazon.co.uk/Champion-Classic-Jersey-Script-T-Shirt/product-reviews/B09T9Y5MMR/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3<- prodDetails(link3)
+
+ProdReview8 <- rbind(page1,page2,page3)
+ProdReview8
+# view(ProdReview8)
+
+
+```
+
+PRODUCT 9
+```{r}
+
+library(httr)
+library(rvest)
+library(selectr)
+#9th Product 
+
+
+
+category <- "Mens Tshirt"
+
+scrapingNodes <- function(session,HTMLnodes){
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link){
+  session <- bow(link,user_agent = "For Educational Purpose")
+  
+ Product <- scrapingNodes(session,"h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session,"span.a-profile-name")[3:11]
+  prodReview <- scrapingNodes(session,"span.a-size-base.review-text.review-text-content")[1:9]
+  RevDate <- scrapingNodes(session,"span.a-size-base.a-color-secondary.review-date")[3:11]
+  prodRatings <- scrapingNodes(session,"span.a-icon-alt")[4:12]
+  
+  TshirtProd <- data.frame(Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(TshirtProd)
+}
+
+#Link for the seperate pages.
+link1 <- "https://www.amazon.co.uk/Jack-Jones-Jjegingham-Twill-Shirt/product-reviews/B08BJQ3LPS/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1<- prodDetails(link1)
+
+link2 <- "https://www.amazon.co.uk/Jack-Jones-Jjegingham-Twill-Shirt/product-reviews/B08BJQ3LPS/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2<- prodDetails(link2)
+
+link3 <- "https://www.amazon.co.uk/Jack-Jones-Jjegingham-Twill-Shirt/product-reviews/B08BJQ3LPS/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3<- prodDetails(link3)
+
+ProdReview9 <- rbind(page1,page2,page3)
+ProdReview9
+# view(ProdReview9)
+
+
+```
+
+
+PRODUCT 10
+```{r}
+
+library(httr)
+library(rvest)
+library(selectr)
+#10th Product 
+
+
+
+category <- "Mens Tshirt"
+
+scrapingNodes <- function(session,HTMLnodes){
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link){
+  session <- bow(link,user_agent = "For Educational Purpose")
+  
+ Product <- scrapingNodes(session,"h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session,"span.a-profile-name")[3:11]
+  prodReview <- scrapingNodes(session,"span.a-size-base.review-text.review-text-content")[1:9]
+  RevDate <- scrapingNodes(session,"span.a-size-base.a-color-secondary.review-date")[3:11]
+  prodRatings <- scrapingNodes(session,"span.a-icon-alt")[4:12]
+  
+  TshirtProd <- data.frame(Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(TshirtProd)
+}
+
+#Link for the seperate pages.
+link1 <- "https://www.amazon.co.uk/Levis-Original-Short-Sleeved-Housemark-T-Shirt/product-reviews/B0CHRSBWKP/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1<- prodDetails(link1)
+
+link2 <- "https://www.amazon.co.uk/Levis-Original-Short-Sleeved-Housemark-T-Shirt/product-reviews/B0CHRSBWKP/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2<- prodDetails(link2)
+
+link3 <- "https://www.amazon.co.uk/Levis-Original-Short-Sleeved-Housemark-T-Shirt/product-reviews/B0CHRSBWKP/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3<- prodDetails(link3)
+
+ProdReview10 <- rbind(page1,page2,page3)
+
+view(ProdReview10)
+
+
+```
+Merging All 10 Products
+```{r}
+AllProducts <- rbind(ProdReview1,
+                     ProdReview2,
+                     ProdReview3,
+                     ProdReview4,
+                     ProdReview5,
+                     ProdReview6,
+                     ProdReview7,
+                     ProdReview8,
+                     ProdReview9,
+                     ProdReview10
+                     )
+AllProducts
+# view(AllProducts)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
