@@ -1,0 +1,3161 @@
+---
+title: "Lab Exercise#2 Bagilidad"
+author: "Bagilidad Ace"
+date: "2024-02-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+PRODUCT 1
+```{r}
+
+library(polite)
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[3:12]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[3:12]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[4:13]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Tall/product-reviews/B088XZH343/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Tall/product-reviews/B088XZH343/ref=cm_cr_getr_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Tall/product-reviews/B088XZH343/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Tall/product-reviews/B088XZH343/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Tall/product-reviews/B088XZH343/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview1 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview1)
+
+
+```
+
+
+
+PRODUCT 2
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens-Smooth-Lamb/product-reviews/B01KWHVGFS/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens-Smooth-Lamb/product-reviews/B01KWHVGFS/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens-Smooth-Lamb/product-reviews/B01KWHVGFS/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens-Smooth-Lamb/product-reviews/B01KWHVGFS/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens-Smooth-Lamb/product-reviews/B01KWHVGFS/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview2 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview2)
+
+
+```
+
+
+PRODUCT 3
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Jack-Jones-12165203-Mens-JJERUSH/product-reviews/B084N24CD5/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Jack-Jones-12165203-Mens-JJERUSH/product-reviews/B084N24CD5/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Jack-Jones-12165203-Mens-JJERUSH/product-reviews/B084N24CD5/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Jack-Jones-12165203-Mens-JJERUSH/product-reviews/B084N24CD5/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Jack-Jones-12165203-Mens-JJERUSH/product-reviews/B084N24CD5/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview3 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview3)
+
+```
+
+PRODUCT 4
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[3:12]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[3:12]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[4:13]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Dickies-Mens-Insulated-Eisenhower-Jacket/product-reviews/B0C6P1MQ3C/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=1"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Dickies-Mens-Insulated-Eisenhower-Jacket/product-reviews/B0C6P1MQ3C/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Dickies-Mens-Insulated-Eisenhower-Jacket/product-reviews/B0C6P1MQ3C/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Dickies-Mens-Insulated-Eisenhower-Jacket/product-reviews/B0C6P1MQ3C/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Dickies-Mens-Insulated-Eisenhower-Jacket/product-reviews/B0C6P1MQ3C/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview4 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview4)
+
+
+
+```
+
+PRODUCT 5
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Helly-Hansen-Daybreaker-Fleece-Vest/product-reviews/B07BZLT5Y7/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Helly-Hansen-Daybreaker-Fleece-Vest/product-reviews/B07BZLT5Y7/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Helly-Hansen-Daybreaker-Fleece-Vest/product-reviews/B07BZLT5Y7/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Helly-Hansen-Daybreaker-Fleece-Vest/product-reviews/B07BZLT5Y7/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Helly-Hansen-Daybreaker-Fleece-Vest/product-reviews/B07BZLT5Y7/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview5 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview5)
+
+
+```
+
+PRODUCT 6
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[2:11]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/CARHARTT-102286-001-Carhartt-Mens-Gilliam/product-reviews/B0891MTMHM/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/CARHARTT-102286-001-Carhartt-Mens-Gilliam/product-reviews/B0891MTMHM/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/CARHARTT-102286-001-Carhartt-Mens-Gilliam/product-reviews/B0891MTMHM/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/CARHARTT-102286-001-Carhartt-Mens-Gilliam/product-reviews/B0891MTMHM/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/CARHARTT-102286-001-Carhartt-Mens-Gilliam/product-reviews/B0891MTMHM/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview6 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview6)
+
+
+
+```
+PRODUCT 7
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Champion-V1012-ChampionChampion/product-reviews/B078GGN89P/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Champion-V1012-ChampionChampion/product-reviews/B078GGN89P/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Champion-V1012-ChampionChampion/product-reviews/B078GGN89P/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Champion-V1012-ChampionChampion/product-reviews/B078GGN89P/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Champion-V1012-ChampionChampion/product-reviews/B078GGN89P/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview7 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview7)
+
+
+```
+
+PRODUCT 8
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Leatherick-Mens-Leather-Waistcoat-Black/product-reviews/B0BR48ZSQ1/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Leatherick-Mens-Leather-Waistcoat-Black/product-reviews/B0BR48ZSQ1/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Leatherick-Mens-Leather-Waistcoat-Black/product-reviews/B0BR48ZSQ1/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Leatherick-Mens-Leather-Waistcoat-Black/product-reviews/B0BR48ZSQ1/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Leatherick-Mens-Leather-Waistcoat-Black/product-reviews/B0BR48ZSQ1/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview8 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview8)
+
+
+```
+
+PRODUCT 9
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Wrangler-Rustic-Sherpa-Lined-Jacket/product-reviews/B07HX17XXJ/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Wrangler-Rustic-Sherpa-Lined-Jacket/product-reviews/B07HX17XXJ/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Wrangler-Rustic-Sherpa-Lined-Jacket/product-reviews/B07HX17XXJ/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Wrangler-Rustic-Sherpa-Lined-Jacket/product-reviews/B07HX17XXJ/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Wrangler-Rustic-Sherpa-Lined-Jacket/product-reviews/B07HX17XXJ/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview9 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview9)
+
+```
+
+PRODUCT 10
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Tommy-Hilfiger-Waterproof-Breathable-Hooded/product-reviews/B079TD7DK9/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Tommy-Hilfiger-Waterproof-Breathable-Hooded/product-reviews/B079TD7DK9/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Tommy-Hilfiger-Waterproof-Breathable-Hooded/product-reviews/B079TD7DK9/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Tommy-Hilfiger-Waterproof-Breathable-Hooded/product-reviews/B079TD7DK9/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Tommy-Hilfiger-Waterproof-Breathable-Hooded/product-reviews/B079TD7DK9/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview10 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview10)
+
+
+
+```
+
+
+PRODUCT 11
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/CARHARTT-102208-Carhartt-Gilliam-Jacket/product-reviews/B0CQP25Y66/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/CARHARTT-102208-Carhartt-Gilliam-Jacket/product-reviews/B0CQP25Y66/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/CARHARTT-102208-Carhartt-Gilliam-Jacket/product-reviews/B0CQP25Y66/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/CARHARTT-102208-Carhartt-Gilliam-Jacket/product-reviews/B0CQP25Y66/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/CARHARTT-102208-Carhartt-Gilliam-Jacket/product-reviews/B0CQP25Y66/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview11 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview11)
+
+
+
+```
+
+
+PRODUCT 12
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[3:12]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[3:12]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[4:13]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Legendary-Whitetails-6575-P/product-reviews/B07XM9KR49/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Legendary-Whitetails-6575-P/product-reviews/B07XM9KR49/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Legendary-Whitetails-6575-P/product-reviews/B07XM9KR49/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Legendary-Whitetails-6575-P/product-reviews/B07XM9KR49/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Legendary-Whitetails-6575-P/product-reviews/B07XM9KR49/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview12 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview12)
+
+
+
+
+
+```
+
+
+PRODUCT 13
+
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[3:12]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[3:12]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[4:13]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Wrangler-080081-Mens-Unlined/product-reviews/B07CYN1MY2/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Wrangler-080081-Mens-Unlined/product-reviews/B07CYN1MY2/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Wrangler-080081-Mens-Unlined/product-reviews/B07CYN1MY2/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Wrangler-080081-Mens-Unlined/product-reviews/B07CYN1MY2/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Wrangler-080081-Mens-Unlined/product-reviews/B07CYN1MY2/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview13 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview13)
+
+
+
+
+```
+
+PRODUCT 14
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[1:10]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Full/product-reviews/B073JHC787/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Full/product-reviews/B073JHC787/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Full/product-reviews/B073JHC787/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Full/product-reviews/B073JHC787/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Full/product-reviews/B073JHC787/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview14 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview14)
+
+
+
+
+
+```
+
+PRODUCT 15
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Frogg-Toggs-Pilot-Guide-Jacket/product-reviews/B07G3WJY5D/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Frogg-Toggs-Pilot-Guide-Jacket/product-reviews/B07G3WJY5D/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Frogg-Toggs-Pilot-Guide-Jacket/product-reviews/B07G3WJY5D/ref=cm_cr_arp_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Frogg-Toggs-Pilot-Guide-Jacket/product-reviews/B07G3WJY5D/ref=cm_cr_arp_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Frogg-Toggs-Pilot-Guide-Jacket/product-reviews/B07G3WJY5D/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview15 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview15)
+
+
+```
+PRODUCT 16
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens-Polar-Fleece/product-reviews/B0757YPPN9/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens-Polar-Fleece/product-reviews/B0757YPPN9/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens-Polar-Fleece/product-reviews/B0757YPPN9/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens-Polar-Fleece/product-reviews/B0757YPPN9/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens-Polar-Fleece/product-reviews/B0757YPPN9/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview16 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview16)
+
+
+
+
+
+```
+
+
+PRODUCT 17
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Ergodyne-Chill-Its-Evaporative-Cooling-Vest/product-reviews/B09JW9C2FX/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Ergodyne-Chill-Its-Evaporative-Cooling-Vest/product-reviews/B09JW9C2FX/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Ergodyne-Chill-Its-Evaporative-Cooling-Vest/product-reviews/B09JW9C2FX/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Ergodyne-Chill-Its-Evaporative-Cooling-Vest/product-reviews/B09JW9C2FX/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Ergodyne-Chill-Its-Evaporative-Cooling-Vest/product-reviews/B09JW9C2FX/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview17 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview17)
+
+
+
+```
+
+PRODUCT 18 
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Columbia-Mens-Vest-Powder-Pass/product-reviews/B088YMHQSV/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Columbia-Mens-Vest-Powder-Pass/product-reviews/B088YMHQSV/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Columbia-Mens-Vest-Powder-Pass/product-reviews/B088YMHQSV/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Columbia-Mens-Vest-Powder-Pass/product-reviews/B088YMHQSV/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Columbia-Mens-Vest-Powder-Pass/product-reviews/B088YMHQSV/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview18 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview18)
+
+
+
+
+
+```
+
+
+
+PRODUCT 19
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Full/product-reviews/B079SNXPQ2/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Full/product-reviews/B079SNXPQ2/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Full/product-reviews/B079SNXPQ2/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Full/product-reviews/B079SNXPQ2/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Full/product-reviews/B079SNXPQ2/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview19 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview19)
+
+
+
+
+```
+
+
+
+PRODUCT 20
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens/product-reviews/B07GFTHWPZ/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens/product-reviews/B07GFTHWPZ/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens/product-reviews/B07GFTHWPZ/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens/product-reviews/B07GFTHWPZ/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens/product-reviews/B07GFTHWPZ/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview20 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview20)
+
+
+```
+
+
+
+PRODUCT 21
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[1:10]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Brandit-Mens-Summer-Windbreaker-Woodland/product-reviews/B082956H26/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Brandit-Mens-Summer-Windbreaker-Woodland/product-reviews/B082956H26/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Brandit-Mens-Summer-Windbreaker-Woodland/product-reviews/B082956H26/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Brandit-Mens-Summer-Windbreaker-Woodland/product-reviews/B082956H26/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Brandit-Mens-Summer-Windbreaker-Woodland/product-reviews/B082956H26/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview21 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview21)
+
+
+```
+
+
+PRODUCT 22
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Ergodyne-Chill-Its-Evaporative-Cooling-Vest/product-reviews/B09JW9C2FX/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Ergodyne-Chill-Its-Evaporative-Cooling-Vest/product-reviews/B09JW9C2FX/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Ergodyne-Chill-Its-Evaporative-Cooling-Vest/product-reviews/B09JW9C2FX/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Ergodyne-Chill-Its-Evaporative-Cooling-Vest/product-reviews/B09JW9C2FX/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Ergodyne-Chill-Its-Evaporative-Cooling-Vest/product-reviews/B09JW9C2FX/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview22 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview22)
+
+
+```
+
+
+PRODUCT 23
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[2:11]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/LONDON-FOG-Mens/product-reviews/B0CQYCR5ZG/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/LONDON-FOG-Mens/product-reviews/B0CQYCR5ZG/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/LONDON-FOG-Mens/product-reviews/B0CQYCR5ZG/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/LONDON-FOG-Mens/product-reviews/B0CQYCR5ZG/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/LONDON-FOG-Mens/product-reviews/B0CQYCR5ZG/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview23 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview23)
+
+```
+
+
+PRODUCT 24
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/THE-NORTH-FACE-Mens-Aconcagua/product-reviews/B0C78QDGZR/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/THE-NORTH-FACE-Mens-Aconcagua/product-reviews/B0C78QDGZR/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/THE-NORTH-FACE-Mens-Aconcagua/product-reviews/B0C78QDGZR/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/THE-NORTH-FACE-Mens-Aconcagua/product-reviews/B0C78QDGZR/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/THE-NORTH-FACE-Mens-Aconcagua/product-reviews/B0C78QDGZR/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview24 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview24)
+
+
+```
+
+
+PRODUCT 25
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens-Polar-Fleece/product-reviews/B0757YPPN9/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens-Polar-Fleece/product-reviews/B0757YPPN9/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens-Polar-Fleece/product-reviews/B0757YPPN9/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens-Polar-Fleece/product-reviews/B0757YPPN9/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Tommy-Hilfiger-Mens-Polar-Fleece/product-reviews/B0757YPPN9/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview25 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview25)
+
+```
+
+
+
+PRODUCT 26
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/DarcChic-Gothic-Tailcoat-Steampunk-Victorian/product-reviews/B07K2RFPZC/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/DarcChic-Gothic-Tailcoat-Steampunk-Victorian/product-reviews/B07K2RFPZC/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/DarcChic-Gothic-Tailcoat-Steampunk-Victorian/product-reviews/B07K2RFPZC/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/DarcChic-Gothic-Tailcoat-Steampunk-Victorian/product-reviews/B07K2RFPZC/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/DarcChic-Gothic-Tailcoat-Steampunk-Victorian/product-reviews/B07K2RFPZC/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview26 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview26)
+
+
+```
+
+
+
+PRODUCT 27
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Legendary-Whitetails-Mens-Tough-Canvas/product-reviews/B0846PX1G2/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Legendary-Whitetails-Mens-Tough-Canvas/product-reviews/B0846PX1G2/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Legendary-Whitetails-Mens-Tough-Canvas/product-reviews/B0846PX1G2/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Legendary-Whitetails-Mens-Tough-Canvas/product-reviews/B0846PX1G2/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Legendary-Whitetails-Mens-Tough-Canvas/product-reviews/B0846PX1G2/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview27 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview27)
+
+
+
+
+```
+
+
+
+
+PRODUCT 28
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Gihuo-Lightweight-Fishing-Travel-Safari/product-reviews/B08MT6WNKG/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/Gihuo-Lightweight-Fishing-Travel-Safari/product-reviews/B08MT6WNKG/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Gihuo-Lightweight-Fishing-Travel-Safari/product-reviews/B08MT6WNKG/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Gihuo-Lightweight-Fishing-Travel-Safari/product-reviews/B08MT6WNKG/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Gihuo-Lightweight-Fishing-Travel-Safari/product-reviews/B08MT6WNKG/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview28 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview28)
+
+
+
+
+```
+
+
+
+PRODUCT 29
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/ZENTHACE-Sherpa-Fleece-Flannel-Jacket/product-reviews/B0CM5J6MHW/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+link2 <- "https://www.amazon.com.au/ZENTHACE-Sherpa-Fleece-Flannel-Jacket/product-reviews/B0CM5J6MHW/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/ZENTHACE-Sherpa-Fleece-Flannel-Jacket/product-reviews/B0CM5J6MHW/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/ZENTHACE-Sherpa-Fleece-Flannel-Jacket/product-reviews/B0CM5J6MHW/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/ZENTHACE-Sherpa-Fleece-Flannel-Jacket/product-reviews/B0CM5J6MHW/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview29 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview29)
+
+
+
+```
+
+
+
+
+PRODUCT 30
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Cutter-Buck-Clique-Full-Zip-Microfleece/product-reviews/B0CN7NRFJP/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/Cutter-Buck-Clique-Full-Zip-Microfleece/product-reviews/B0CN7NRFJP/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Cutter-Buck-Clique-Full-Zip-Microfleece/product-reviews/B0CN7NRFJP/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Cutter-Buck-Clique-Full-Zip-Microfleece/product-reviews/B0CN7NRFJP/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Cutter-Buck-Clique-Full-Zip-Microfleece/product-reviews/B0CN7NRFJP/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview30 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview30)
+
+
+
+```
+
+
+
+
+PRODUCT 31
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Dickies-Mens-Diamond-Quilted-Nylon/product-reviews/B07BZQGWPX/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/Dickies-Mens-Diamond-Quilted-Nylon/product-reviews/B07BZQGWPX/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Dickies-Mens-Diamond-Quilted-Nylon/product-reviews/B07BZQGWPX/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Dickies-Mens-Diamond-Quilted-Nylon/product-reviews/B07BZQGWPX/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Dickies-Mens-Diamond-Quilted-Nylon/product-reviews/B07BZQGWPX/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview31 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview31)
+
+
+```
+PRODUCT 32
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Club-Fleece-Lined-Windbreaker-Jacket/product-reviews/B09YHF53X4/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/Club-Fleece-Lined-Windbreaker-Jacket/product-reviews/B09YHF53X4/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Club-Fleece-Lined-Windbreaker-Jacket/product-reviews/B09YHF53X4/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Club-Fleece-Lined-Windbreaker-Jacket/product-reviews/B09YHF53X4/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Club-Fleece-Lined-Windbreaker-Jacket/product-reviews/B09YHF53X4/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview32 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview32)
+
+
+```
+
+
+
+
+PRODUCT 33
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/TRAILSIDE-SUPPLY-CO-Medium-Weight-Water-Repellent/product-reviews/B07KVG822B/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/TRAILSIDE-SUPPLY-CO-Medium-Weight-Water-Repellent/product-reviews/B07KVG822B/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/TRAILSIDE-SUPPLY-CO-Medium-Weight-Water-Repellent/product-reviews/B07KVG822B/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/TRAILSIDE-SUPPLY-CO-Medium-Weight-Water-Repellent/product-reviews/B07KVG822B/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/TRAILSIDE-SUPPLY-CO-Medium-Weight-Water-Repellent/product-reviews/B07KVG822B/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview33 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview33)
+
+
+```
+
+
+
+PRODUCT 34
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Dickies-Big-Tall-Sanded-Sherpa-Hooded/product-reviews/B07JGDXHWX/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/Dickies-Big-Tall-Sanded-Sherpa-Hooded/product-reviews/B07JGDXHWX/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Dickies-Big-Tall-Sanded-Sherpa-Hooded/product-reviews/B07JGDXHWX/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Dickies-Big-Tall-Sanded-Sherpa-Hooded/product-reviews/B07JGDXHWX/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Dickies-Big-Tall-Sanded-Sherpa-Hooded/product-reviews/B07JGDXHWX/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview34 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview34)
+
+
+```
+
+
+
+
+PRODUCT 35
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[2:11]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Barber-Jacket-Stylist-Grooming-Vintage/product-reviews/B07Z3VXBCZ/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/Barber-Jacket-Stylist-Grooming-Vintage/product-reviews/B07Z3VXBCZ/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Barber-Jacket-Stylist-Grooming-Vintage/product-reviews/B07Z3VXBCZ/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Barber-Jacket-Stylist-Grooming-Vintage/product-reviews/B07Z3VXBCZ/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Barber-Jacket-Stylist-Grooming-Vintage/product-reviews/B07Z3VXBCZ/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview35 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview35)
+
+
+```
+
+
+
+
+
+PRODUCT 36
+
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Wrangler-Western-Style-Lined-Jacket/product-reviews/B00CYAP8OC/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/Wrangler-Western-Style-Lined-Jacket/product-reviews/B00CYAP8OC/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Wrangler-Western-Style-Lined-Jacket/product-reviews/B00CYAP8OC/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Wrangler-Western-Style-Lined-Jacket/product-reviews/B00CYAP8OC/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Wrangler-Western-Style-Lined-Jacket/product-reviews/B00CYAP8OC/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview36 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview36)
+
+
+```
+
+
+
+
+PRODUCT 37
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/ZENTHACE-Washed-Arctic-Quilt-Utility-Rugged/product-reviews/B082V7HR7F/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/ZENTHACE-Washed-Arctic-Quilt-Utility-Rugged/product-reviews/B082V7HR7F/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/ZENTHACE-Washed-Arctic-Quilt-Utility-Rugged/product-reviews/B082V7HR7F/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/ZENTHACE-Washed-Arctic-Quilt-Utility-Rugged/product-reviews/B082V7HR7F/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/ZENTHACE-Washed-Arctic-Quilt-Utility-Rugged/product-reviews/B082V7HR7F/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview37 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview37)
+
+
+```
+
+
+
+
+PRODUCT 38
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Charles-River-Apparel-Pack-N-Go-Windbreaker/product-reviews/B00JGL923K/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/Charles-River-Apparel-Pack-N-Go-Windbreaker/product-reviews/B00JGL923K/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Charles-River-Apparel-Pack-N-Go-Windbreaker/product-reviews/B00JGL923K/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Charles-River-Apparel-Pack-N-Go-Windbreaker/product-reviews/B00JGL923K/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Charles-River-Apparel-Pack-N-Go-Windbreaker/product-reviews/B00JGL923K/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview38 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview38)
+
+
+```
+
+
+
+PRODUCT 39
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/CARHARTT-102286-001-Mens-Gilliam-Vest/product-reviews/B08D62BQ1Q/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/CARHARTT-102286-001-Mens-Gilliam-Vest/product-reviews/B08D62BQ1Q/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/CARHARTT-102286-001-Mens-Gilliam-Vest/product-reviews/B08D62BQ1Q/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/CARHARTT-102286-001-Mens-Gilliam-Vest/product-reviews/B08D62BQ1Q/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/CARHARTT-102286-001-Mens-Gilliam-Vest/product-reviews/B08D62BQ1Q/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview39 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview39)
+
+
+```
+
+
+
+PRODUCT 40
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Columbia-1519151-Mens-Cathedral-Peak/product-reviews/B07YNL4GBR/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/Columbia-1519151-Mens-Cathedral-Peak/product-reviews/B07YNL4GBR/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Columbia-1519151-Mens-Cathedral-Peak/product-reviews/B07YNL4GBR/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Columbia-1519151-Mens-Cathedral-Peak/product-reviews/B07YNL4GBR/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Columbia-1519151-Mens-Cathedral-Peak/product-reviews/B07YNL4GBR/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview40 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview40)
+
+
+```
+
+
+PRODUCT 41
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Tall/product-reviews/B079SVH8QR/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Tall/product-reviews/B079SVH8QR/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Tall/product-reviews/B079SVH8QR/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Tall/product-reviews/B079SVH8QR/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Columbia-Mens-Steens-Mountain-Tall/product-reviews/B079SVH8QR/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview41 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview41)
+
+
+```
+
+
+
+PRODUCT 42
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/North-Face-Mens-Resolve-Jacket/product-reviews/B077QNCCJQ/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/North-Face-Mens-Resolve-Jacket/product-reviews/B077QNCCJQ/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/North-Face-Mens-Resolve-Jacket/product-reviews/B077QNCCJQ/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/North-Face-Mens-Resolve-Jacket/product-reviews/B077QNCCJQ/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/North-Face-Mens-Resolve-Jacket/product-reviews/B077QNCCJQ/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview42 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview42)
+
+
+```
+
+
+
+PRODUCT 43
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Leather-EL5315-Motorcycle-Riding-Regular/product-reviews/B00IWHHRY0/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/Leather-EL5315-Motorcycle-Riding-Regular/product-reviews/B00IWHHRY0/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Leather-EL5315-Motorcycle-Riding-Regular/product-reviews/B00IWHHRY0/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Leather-EL5315-Motorcycle-Riding-Regular/product-reviews/B00IWHHRY0/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Leather-EL5315-Motorcycle-Riding-Regular/product-reviews/B00IWHHRY0/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview43 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview43)
+
+
+```
+
+
+PRODUCT 44
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Brandit-3110-2-Mens-CWU-Jacket/product-reviews/B089TF592K/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/Brandit-3110-2-Mens-CWU-Jacket/product-reviews/B089TF592K/ref=cm_cr_getr_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Brandit-3110-2-Mens-CWU-Jacket/product-reviews/B089TF592K/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Brandit-3110-2-Mens-CWU-Jacket/product-reviews/B089TF592K/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Brandit-3110-2-Mens-CWU-Jacket/product-reviews/B089TF592K/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview44 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview44)
+
+
+```
+
+
+
+PRODUCT 45
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Stockerpoint-Mens-Weste-Ricardo-Trachtenwesten/product-reviews/B088YQ79PJ/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/Stockerpoint-Mens-Weste-Ricardo-Trachtenwesten/product-reviews/B088YQ79PJ/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Stockerpoint-Mens-Weste-Ricardo-Trachtenwesten/product-reviews/B088YQ79PJ/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Stockerpoint-Mens-Weste-Ricardo-Trachtenwesten/product-reviews/B088YQ79PJ/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Stockerpoint-Mens-Weste-Ricardo-Trachtenwesten/product-reviews/B088YQ79PJ/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview45 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview45)
+
+
+```
+
+
+
+PRODUCT 46
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Columbia-Mens-Fast-Trek-Fleece/product-reviews/B0CRW2FSN9/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/Columbia-Mens-Fast-Trek-Fleece/product-reviews/B0CRW2FSN9/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Columbia-Mens-Fast-Trek-Fleece/product-reviews/B0CRW2FSN9/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Columbia-Mens-Fast-Trek-Fleece/product-reviews/B0CRW2FSN9/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Columbia-Mens-Fast-Trek-Fleece/product-reviews/B0CRW2FSN9/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview46 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview46)
+
+
+```
+
+
+
+PRODUCT 47
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[1:10]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Columbia-Mens-Jackets-Black-Large/product-reviews/B072R1QZB3/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/Columbia-Mens-Jackets-Black-Large/product-reviews/B072R1QZB3/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Columbia-Mens-Jackets-Black-Large/product-reviews/B072R1QZB3/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Columbia-Mens-Jackets-Black-Large/product-reviews/B072R1QZB3/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Columbia-Mens-Jackets-Black-Large/product-reviews/B072R1QZB3/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview47 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview47)
+
+
+```
+
+
+
+PRODUCT 48
+
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Betty-Dain-Premier-Barber-Jacket/product-reviews/B007NIQUME/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/Betty-Dain-Premier-Barber-Jacket/product-reviews/B007NIQUME/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Betty-Dain-Premier-Barber-Jacket/product-reviews/B007NIQUME/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Betty-Dain-Premier-Barber-Jacket/product-reviews/B007NIQUME/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Betty-Dain-Premier-Barber-Jacket/product-reviews/B007NIQUME/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview48 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview48)
+
+
+```
+
+
+
+PRODUCT 49
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Red-Kap-Zip-Front-Smock-Sleeve/product-reviews/B007FVWIC0/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/Red-Kap-Zip-Front-Smock-Sleeve/product-reviews/B007FVWIC0/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Red-Kap-Zip-Front-Smock-Sleeve/product-reviews/B007FVWIC0/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Red-Kap-Zip-Front-Smock-Sleeve/product-reviews/B007FVWIC0/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Red-Kap-Zip-Front-Smock-Sleeve/product-reviews/B007FVWIC0/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview49 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview49)
+
+
+```
+
+
+
+
+PRODUCT 50
+```{r}
+library(httr)
+library(rvest)
+library(selectr)
+
+category <- "Mens Jackets"
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+  Sys.sleep(7) 
+
+  Product <- scrapingNodes(session, "h1.a-size-large.a-text-ellipsis")
+  prodReviewer <- scrapingNodes(session, "span.a-profile-name")[1:10]
+  prodReview <- scrapingNodes(session, "span.a-size-base.review-text.review-text-content")[1:10]
+  ReviewerType <- scrapingNodes(session, "span.a-size-mini.a-color-state.a-text-bold")[1:10]
+  RevDate <- scrapingNodes(session, "span.a-size-base.a-color-secondary.review-date")[1:10]
+  prodRatings <- scrapingNodes(session, "span.a-icon-alt")[2:11]
+
+  JacketProd <- data.frame( Category = category,
+                           ProductName = Product,
+                           Reviewer = prodReviewer,
+                           Review = prodReview,
+                           TypeOfReviewer = ReviewerType,
+                           ReviewDate = RevDate,
+                           Rating = prodRatings)
+  return(JacketProd)
+}
+
+
+link1 <- "https://www.amazon.com.au/Red-Kap-Pocket-Quilt-Lined-Jacket/product-reviews/B004HCC3CA/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+page1 <- prodDetails(link1)
+
+
+link2 <- "https://www.amazon.com.au/Red-Kap-Pocket-Quilt-Lined-Jacket/product-reviews/B004HCC3CA/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=2"
+page2 <- prodDetails(link2)
+
+link3 <- "https://www.amazon.com.au/Red-Kap-Pocket-Quilt-Lined-Jacket/product-reviews/B004HCC3CA/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&pageNumber=3"
+page3 <- prodDetails(link3)
+
+link4 <- "https://www.amazon.com.au/Red-Kap-Pocket-Quilt-Lined-Jacket/product-reviews/B004HCC3CA/ref=cm_cr_getr_d_paging_btm_next_4?ie=UTF8&reviewerType=all_reviews&pageNumber=4"
+page4 <- prodDetails(link4)
+
+
+link5 <- "https://www.amazon.com.au/Red-Kap-Pocket-Quilt-Lined-Jacket/product-reviews/B004HCC3CA/ref=cm_cr_getr_d_paging_btm_next_5?ie=UTF8&reviewerType=all_reviews&pageNumber=5"
+page5 <- prodDetails(link5)
+
+
+ProductReview50 <- rbind(page1, page2, page3,page4,page5)
+
+#view(ProductReview50)
+
+
+```
+
+
+EMERGE ALL PRODUCTS
+```{r}
+AllProducts <-rbind(ProductReview1,
+                     ProductReview2,
+                     ProductReview3,
+                     ProductReview4,
+                     ProductReview5,
+                     ProductReview6,
+                     ProductReview7,
+                     ProductReview8,
+                     ProductReview9,
+                     ProductReview10,
+                     ProductReview11,
+                     ProductReview12,
+                     ProductReview13,
+                     ProductReview14,
+                     ProductReview15,
+                     ProductReview16,
+                     ProductReview17,
+                     ProductReview18,
+                     ProductReview19,
+                     ProductReview20,
+                     ProductReview21,
+                     ProductReview22,
+                     ProductReview23,
+                     ProductReview24,
+                     ProductReview25,
+                     ProductReview26,
+                     ProductReview27,
+                     ProductReview28,
+                     ProductReview29,
+                     ProductReview30,
+                     ProductReview31,
+                     ProductReview32,
+                     ProductReview33,
+                     ProductReview34,
+                     ProductReview35,
+                     ProductReview36,
+                     ProductReview37,
+                     ProductReview38,
+                     ProductReview39,
+                     ProductReview40,
+                     ProductReview41,
+                     ProductReview42,
+                     ProductReview43,
+                     ProductReview44,
+                     ProductReview45,
+                     ProductReview46,
+                     ProductReview47,
+                     ProductReview48,
+                     ProductReview49,
+                     ProductReview50)
+AllProducts
+write.csv(AllProducts,"FiftyProductsReview.csv")
+#view(AllProducts)
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
