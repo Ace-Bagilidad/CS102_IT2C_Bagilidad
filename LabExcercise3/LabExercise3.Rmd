@@ -1,0 +1,137 @@
+---
+title: "Lab Exercise 3"
+author: "Ace Bagilidad"
+date: "2024-02-22"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+10 MOVIES REVIEWS
+```{r}
+
+
+library(polite)
+library(httr)
+library(rvest)
+library(selectr)
+
+
+#Scraping of Movies
+
+scrapingNodes <- function(session, HTMLnodes) {
+  session %>% scrape() %>% html_nodes(HTMLnodes) %>% html_text()
+}
+
+prodDetails <- function(link) {
+  session <- bow(link, user_agent = "For Educational Purpose")
+
+ 
+
+  Title <- scrapingNodes(session, "a.subnav_heading")
+  movieReviewer <- scrapingNodes(session, "span.display-name-link")[1:10]
+  reviewText <- scrapingNodes(session, "div.text.show-more__control")[1:10]
+  RevDate <- scrapingNodes(session, "span.review-date")[1:10]
+  movieRating <- scrapingNodes(session, "span.rating-other-user-rating")[1:10]
+  titleReview <-  scrapingNodes(session, "a.title")[1:10]
+  
+  
+  Imdb <- data.frame(      Movie_Title = Title,
+                           Reviewer = movieReviewer,
+                           Review_Date = RevDate,
+                           Rating = movieRating,
+                           Review = reviewText,
+                           Review_Title = titleReview
+                           )
+  return(Imdb)
+}
+
+
+link1 <- "https://www.imdb.com/title/tt0068646/reviews?ref_=tt_urv"
+MovieReviewsData <- prodDetails(link1)
+#View(MovieReviewsData)
+
+
+```
+
+Connection to Database
+```{r}
+#@install.packages("RMySQL")
+
+library(dplyr,dbplyr)
+library(RMySQL)
+
+#creating connections
+connection <- dbConnect(RMySQL::MySQL(),
+                        dsn="MariaDB-connection",
+                        Server = "localhost",
+                        dbname = "movie", 
+                        user = "root", 
+                        password = "") 
+
+
+
+
+
+```
+
+Listing tables and fields
+
+```{r}
+
+
+dbListTables(connection)
+dbListFields(connection,"reviews")
+
+
+
+
+```
+Reading Data from the Database
+```{r}
+review_data <- dbGetQuery(connection, "SELECT * FROM movie.reviews")
+
+
+glimpse(review_data)
+
+
+
+
+```
+
+Adding reviews to the database
+```{r}
+for (i in 1:nrow(MovieReviewsData)) {
+    query <- paste0("INSERT INTO reviews (Movie_Title, Reviewer, Review_Date, Rating, Review, Review_Title) 
+                  VALUES ('", MovieReviewsData$Movie_Title[i],"','", MovieReviewsData$Reviewer[i], "','", MovieReviewsData$Review_Date[i],"','", MovieReviewsData$Rating[i], "','",
+                  gsub("'","''", MovieReviewsData$Review[i]), "','", gsub("'","''", MovieReviewsData$Review_Title[i]), "')")
+  
+  # this execute the query
+  query_result <- dbSendQuery(connection, query)
+  
+  # clear result after executing query
+  dbClearResult(query_result)
+}
+
+
+
+```
+
+Reading Data from the Database
+```{r}
+review_data <- dbGetQuery(connection, "SELECT * FROM movie.reviews")
+#removing the id in the dataframe
+review_data[,c(2:7)]
+
+#exporting to csv
+#write.csv(review_data[,c(2:7)], "IMDBmovies.csv")
+
+
+```
+
