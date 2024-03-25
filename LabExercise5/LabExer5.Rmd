@@ -2,15 +2,73 @@
 title: "Lab Exercise 5"
 author: "Ace Bagilidad"
 date: "2024-03-14"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#Loading of Data Sets
+#Cleaning arxiv articles-Machine Learning
 ```{r}
+library(readr)
+library(dplyr)
+library(stringr)
+library(lubridate)
+Machine_Learning <- read_csv("Data Sets/Machine Learning.csv")
+
+
+#cleaning of dates
+cleaned_date <- Machine_Learning$meta %>% str_extract("\\w+, \\d+ \\w+ \\d{4}") %>% 
+  as.POSIXct(format = " %a, %d %b %Y", tz = "UTC") %>% 
+  as.Date() %>% 
+ format("%Y-%m-%d")
+
+#mutating cleaned date,cleaning of subjects and converting dataset to lowercase.
+clMachine_Learning <- Machine_Learning %>% mutate(meta=cleaned_date,
+                                                       subject= gsub("\\s\\(.*\\)", "", subject)) %>% mutate(across(everything(), tolower)) 
+head(clMachine_Learning)
+
+#writing to csv
+#write.csv(clMachine_Learning,"Cleaned Data Set-Machine Learning")
+
+```
+
+#Cleaning of amazon product reviews
+```{r}
+library(stringi)
+
+FiftyProductsReview <- read_csv("Data Sets/FiftyProductsReview.csv")
+
+#convert dataset to lower
+tl_FiftyProductsReview <- FiftyProductsReview %>% mutate(across(where(is.character), tolower))
+
+#cleaning of dates
+cleaned_date <- tl_FiftyProductsReview$ReviewDate %>%
+  str_extract("\\d{1,2} \\w+ \\d{4}") %>%
+  as.Date(format = " %d %B %Y") %>%
+  format("%Y-%m-%d")
+
+# Extracting the rating from the rating column and changing to integer
+products_reviews_integer <-  as.integer(str_extract(tl_FiftyProductsReview$Rating, "\\d+\\.\\d+"))
+
+
+
+
+# Converting dataset into lowercase and cleaning emoji,non char, and newlines
+cleaned_FiftyProductsReview <- tl_FiftyProductsReview %>% mutate(ReviewDate=cleaned_date,
+                                                       Rating=products_reviews_integer,
+                                                       Review = gsub("\\n", "", Review),
+                                                       Review = stri_replace_all_regex(Review, pattern = "\\p{So}", replacement = ""), 
+                                                       Review = gsub("[^[:graph:][:space:]]", "", Review)
+                                                       ) 
+head(cleaned_FiftyProductsReview)
+
+write.csv(cleaned_FiftyProductsReview,"Cleaned Data Sets/Cleaned Data Set - FiftyProductsReviews.csv")
 
 
 ```
+
+
